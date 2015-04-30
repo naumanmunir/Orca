@@ -1,0 +1,105 @@
+/*COPY RIGHT NAUMAN MUNIR 2015*/
+
+using UnityEngine;
+using System.Collections;
+using UnityEngine.UI;
+
+public class uiScript : MonoBehaviour {
+
+	public Text countDown;
+	public Text scoreText;
+	public Text score;
+	public Text panelScore;
+	public Text highScore;
+	public Text newText;
+	public Text bestScore;
+	public Text getReadyTxt;
+	public playerController player;
+	public scoreScript scorescript;
+	private float count;
+
+	private bool showCountdown;
+
+	private bool gameStarted;
+	public bool GameStarted {
+		get{ return gameStarted;}
+		set{ gameStarted = GameStarted;}
+	}
+
+	public GameObject gameOverPanel;
+
+	//private int highScore;
+
+	void Awake()
+	{
+		newText.enabled = false;
+		getReadyTxt.enabled = true;
+	}
+
+	// Use this for initialization
+	void Start () {
+
+		countDown.text = "";
+		count = 4;
+		StartCoroutine(GetReady());
+
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	
+		DisplayScores ();
+		GameOver ();
+		if (gameStarted)
+			getReadyTxt.enabled = false;
+	}
+	
+
+	public void DisplayScores()
+	{
+
+		score.text = scorescript.GetComponent<scoreScript>().Score.ToString();
+		highScore.text = scorescript.GetComponent<scoreScript> ().HighScore.ToString ();
+		//Debug.Log (scorescript.GetComponent<scoreScript> ().Score.ToString ());
+
+	}
+
+	IEnumerator GetReady () {
+		showCountdown = true;
+		
+		countDown.text = "3";
+		yield return new WaitForSeconds (1.0f);
+		
+		countDown.text = "2";
+		yield return new WaitForSeconds (1.0f);
+		
+		countDown.text = "1";
+		yield return new WaitForSeconds (1.0f);
+		
+		gameStarted = true;
+		showCountdown = false;
+		countDown.text = "";    
+
+
+	}
+
+	public void GameOver()
+	{
+		if (player.GameOver) {
+
+			gameOverPanel.SetActive(true);
+
+
+			panelScore.text = score.text;
+			bestScore.text = highScore.text;
+
+
+			if(scorescript.NewBest)
+			{
+				newText.enabled = true;
+			}
+		}
+
+	}
+
+}
