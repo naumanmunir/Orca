@@ -1,0 +1,58 @@
+/*COPYRIGHT NAUMAN MUNIR 2015 */
+
+using UnityEngine;
+using System.Collections;
+
+public class scoreScript : MonoBehaviour {
+
+	private int score = 0;
+	private int highScore = 0;
+	private bool newBest;
+	public playerController player;
+
+	public int Score {
+		get{ return score;}
+		set{ score = Score;}
+	}
+
+	public int HighScore
+	{
+		get{ return highScore;}
+		set{ highScore = HighScore;}
+	}
+
+	public bool NewBest
+	{
+		get{ return newBest;}
+		set{ newBest = NewBest;}
+	}
+
+	// Use this for initialization
+	void Start () {
+		//PlayerPrefs.DeleteAll ();
+		newBest = false;
+		highScore = PlayerPrefs.GetInt ("highScore", 0);
+	}
+	
+	// Update is called once per frame
+	void Update () {
+		AddScore ();
+	}
+
+	public void AddScore()
+	{
+		score = player.PenguinEaten;
+
+		if (score > highScore) {
+			
+			highScore = score;
+			newBest = true;
+		}
+		//Debug.Log (score);
+	}
+
+	void OnDestroy()
+	{
+		PlayerPrefs.SetInt ("highScore", highScore);
+	}
+}
